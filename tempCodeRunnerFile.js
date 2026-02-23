@@ -1,38 +1,33 @@
-// let n=[10,20,30,40,50]
-// n.toString()
-// console.log(n)
-
-
-// let s=[250, 645, 300, 900, 50];
-// let n=Number(prompt("Enter the item offer in % format : "));
-// for (let i=0;i<s.length;i++){
-//     m=s[i]*n/100;
-//     s[i]=s[i]-m
+// function a(x,y){
+//     return x+y;
 // }
-// console.log(s)
+
+// function b(x,y){
+//     return x-y;
+// }
+
+// let d=(x,y) =>{
+//     return x+y;
+// }
+
+// let f = d(4,6);
+// console.log(f)
+// function c(x,y){
+//     return x*y;
+// }
+// let k=a(5,10)
+// console.log(k)
 
 
-// let saveetha=["SSE","SSp","SMCH"]
-// let vit=["Vit-Ap","Vit-che"]
-// let colleges=saveetha.concat(vit)
-// console.log(colleges)
 
-// let n=[10,20,30,40,50,60]
-// n.splice(2,2,22,33)
-// console.log(n)
-// n.splice(3,0,70)
-// n.splice(3,1)
-// console.log(n)
-
-
-// let c=["Bloomberg","Microsoft","Uber","Google","IBM","Netflix"]
-// c.shift();
-// console.log(c)
-// c.splice(1,1,"ola")
-// console.log(c)
-// c.push("Amazon")
-// console.log(c)
-
-let n=[10,20,30,40,50,60]
-n.splice(2)
-console.log(n)
+function s(a){
+    let c=0
+    for (let chat of a){
+        if (char ==='a' || char ==='e' || char==='i' || char==='o' || char==='u'){
+            c++;
+        }
+    }
+    console.log(c)
+}
+let m=a("kondareddy");
+console.log(m)
