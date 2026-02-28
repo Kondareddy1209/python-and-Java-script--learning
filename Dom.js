@@ -11,8 +11,11 @@
 //     console.log(element)
 // });
 
-const firstWorkContact = document.querySelectorAll('button')
-console.log(firstWorkContact)
+// const firstWorkContact = document.querySelectorAll('button')
+// console.log(firstWorkContact)
 
-const thirdBtn = document.querySelector('div button:nth-child(3)')
-console.log(thirdBtn)
+// const thirdBtn = document.querySelector('div button:nth-child(3)')
+// console.log(thirdBtn)
+
+const topicElement = document.querySelector('#topic')
+console.log(topicElement.innerHTML)
