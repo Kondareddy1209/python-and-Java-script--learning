@@ -14,3 +14,4 @@ for i in range(n-1,-1,-1):
     post[i]*=postfix
     postfix*=nums[i]
 print(post)
+
