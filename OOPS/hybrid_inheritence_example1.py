@@ -21,6 +21,7 @@ class Person:
         self.name = name
 
 
+
 # Employee class inherits from Person
 class Employee(Person):
     # Method to show role
