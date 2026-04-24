@@ -2,6 +2,7 @@
 
 ## Overview
 
+
 This repository is a hands-on collection of Python and JavaScript practice files covering core programming concepts, object-oriented programming, array/list algorithms, DOM manipulation, and LeetCode problem solutions. It tracks learning progress from fundamentals through to advanced OOP patterns and coding challenges.
 
 ---
