@@ -1,60 +1,92 @@
 """
 📌 Pivot Index (LeetCode 724) - GitHub Ready Notes
 
-Author: Your Name
-
 --------------------------------------------------
 🧠 Problem Statement:
 Given an integer array nums, return the pivot index.
 
-The pivot index is the index where:
-👉 Sum of elements on the LEFT == Sum of elements on the RIGHT
+A pivot index is an index where:
+👉 Sum of all elements to the LEFT of the index
+    equals
+👉 Sum of all elements to the RIGHT of the index.
 
 If no such index exists, return -1.
 
 --------------------------------------------------
-🚀 Approach: Prefix Sum Technique
+🚀 Approach: Prefix Sum / Running Sum
 
-Instead of recalculating left and right sums every time (which is slow),
-we use a running sum (prefix sum).
+Instead of calculating left and right sums for every index
+(which would take O(n²) time), we use:
 
-Key Idea:
-- total_sum = sum of all elements
-- left_sum = keeps increasing as we iterate
+1. total_sum = sum(nums)
+2. left_sum = running sum of elements to the left
 
-At any index i:
-Right sum = total_sum - left_sum - nums[i]
+At each index i:
 
-Condition:
-👉 left_sum == total_sum - left_sum - nums[i]
+    right_sum = total_sum - left_sum - nums[i]
+
+Why?
+
+    total_sum = left_sum + nums[i] + right_sum
+
+Rearranging:
+
+    right_sum = total_sum - left_sum - nums[i]
+
+If:
+
+    left_sum == right_sum
+
+then i is the pivot index.
 
 --------------------------------------------------
-✅ Step-by-Step Dry Run
+✅ Dry Run
 
-Example:
 nums = [1, 7, 3, 6, 5, 6]
 
-Step 1:
 total_sum = 28
 left_sum = 0
 
-Index 0:
+i = 0
 left = 0
 right = 28 - 0 - 1 = 27 ❌
 
-Index 1:
+i = 1
 left = 1
 right = 28 - 1 - 7 = 20 ❌
 
-Index 2:
+i = 2
 left = 8
 right = 28 - 8 - 3 = 17 ❌
 
-Index 3:
+i = 3
 left = 11
 right = 28 - 11 - 6 = 11 ✅
 
 🎯 Pivot Index = 3
+
+--------------------------------------------------
+⏱️ Time Complexity:
+O(n)
+- Single traversal of the array
+
+🧠 Space Complexity:
+O(1)
+- Only a few variables are used
+
+--------------------------------------------------
+⚠️ Common Mistakes:
+❌ Updating left_sum before checking the condition
+❌ Returning the pivot value instead of its index
+❌ Forgetting to subtract nums[i] when computing right_sum
+❌ Skipping the last index during iteration
+
+--------------------------------------------------
+🔥 Key Takeaways:
+✔ Use total sum + running left sum
+✔ Compute right sum in O(1)
+✔ Check balance before updating left_sum
+✔ Optimal solution runs in O(n) time
 
 --------------------------------------------------
 💻 Implementation
@@ -64,59 +96,25 @@ from typing import List
 
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
+        # Calculate total sum of the array
         total_sum = sum(nums)
+
+        # Running sum of elements to the left of current index
         left_sum = 0
 
-        # ✅ Using FOR loop (recommended)
+        # Traverse each index and compare left and right sums
         for i in range(len(nums)):
-            if left_sum == total_sum - left_sum - nums[i]:
+
+            # Right sum = total sum - left sum - current element
+            right_sum = total_sum - left_sum - nums[i]
+
+            # If left and right sums are equal,
+            # current index is the pivot index
+            if left_sum == right_sum:
                 return i
+
+            # Update left sum for the next iteration
             left_sum += nums[i]
 
+        # No pivot index found
         return -1
-
-
-# ---------------------------------------------
-# ✅ Alternative: Using WHILE loop
-# ---------------------------------------------
-
-class SolutionWhile:
-    def pivotIndex(self, nums: List[int]) -> int:
-        total_sum = sum(nums)
-        left_sum = 0
-        i = 0
-
-        while i < len(nums):
-            if left_sum == total_sum - left_sum - nums[i]:
-                return i
-            left_sum += nums[i]
-            i += 1
-
-        return -1
-
-
-"""
---------------------------------------------------
-⏱️ Time Complexity:
-O(n)
-- We traverse the array once
-
-🧠 Space Complexity:
-O(1)
-- No extra space used (only variables)
-
---------------------------------------------------
-⚠️ Common Mistakes:
-❌ Removing duplicates (changes positions)
-❌ Returning value instead of index
-❌ Including current element in left sum before checking
-❌ Wrong loop condition (like while i > len(nums))
-
---------------------------------------------------
-🔥 Key Takeaways:
-✔ Always preserve array structure
-✔ Use prefix sum for efficiency
-✔ Think in terms of LEFT and RIGHT balance
-
-
-"""
