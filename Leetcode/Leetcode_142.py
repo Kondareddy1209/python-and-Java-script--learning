@@ -4,20 +4,19 @@
 =========================================================
 
 Problem:
-Given the head of a linked list, return the node where the cycle begins.
-If there is no cycle, return None.
+Given the head of a linked list, return the node where the cycle
+begins. If there is no cycle, return None.
 
 A cycle exists in a linked list if some node can be reached again
 by continuously following the next pointer.
 
-You must solve it using O(1) extra space.
-
 ---------------------------------------------------------
-Example 1:
+Example 1
+
 Input:
 head = [3,2,0,-4], pos = 1
 
-Visual Representation:
+Visual:
 3 -> 2 -> 0 -> -4
      ^         |
      |_________|
@@ -26,15 +25,16 @@ Output:
 Node with value 2
 
 Explanation:
-The tail connects to the node at index 1,
-so the cycle starts at node 2.
+The tail connects to the node at index 1, so the cycle starts
+at node 2.
 
 ---------------------------------------------------------
-Example 2:
+Example 2
+
 Input:
 head = [1,2], pos = 0
 
-Visual Representation:
+Visual:
 1 -> 2
 ^    |
 |____|
@@ -43,38 +43,60 @@ Output:
 Node with value 1
 
 ---------------------------------------------------------
-Example 3:
+Example 3
+
 Input:
 head = [1], pos = -1
-
-Visual Representation:
-1 -> None
 
 Output:
 None
 
 ---------------------------------------------------------
-Approach (Floyd's Cycle Detection / Tortoise and Hare)
+Approach 1: Hash Set
+---------------------------------------------------------
 
-Step 1: Detect whether a cycle exists.
+Idea:
+Store every visited node in a hash set.
+
+Steps:
+1. Traverse the linked list.
+2. If the current node is already present in the set,
+   return that node.
+3. Otherwise, add it to the set.
+4. If we reach None, no cycle exists.
+
+Why it works:
+- The first node visited twice is the starting node
+  of the cycle.
+
+Time Complexity:
+O(n)
+
+Space Complexity:
+O(n)
+
+---------------------------------------------------------
+Approach 2: Floyd's Cycle Detection (Tortoise & Hare)
+---------------------------------------------------------
+
+Phase 1: Detect Cycle
+
 - Use two pointers:
-    slow -> moves one step at a time
-    fast -> moves two steps at a time
+    slow -> moves 1 step
+    fast -> moves 2 steps
 
-- If there is no cycle:
-    fast reaches None.
+- If there is a cycle, they will eventually meet.
+- If fast reaches None, no cycle exists.
 
-- If there is a cycle:
-    slow and fast eventually meet.
+Phase 2: Find Cycle Start
 
-Step 2: Find the starting node of the cycle.
 - Reset slow to head.
 - Keep fast at the meeting point.
-- Move both pointers one step at a time.
-- The node where they meet again is the
-  starting node of the cycle.
+- Move both one step at a time.
+- The node where they meet is the start of the cycle.
 
 Why does this work?
+
 Let:
 x = distance from head to cycle start
 y = distance from cycle start to meeting point
@@ -88,30 +110,21 @@ When slow and fast meet:
 
 => x = k*c - y
 
-This means the distance from head to cycle start
-is equal to the distance from meeting point to
+This means the distance from the head to the cycle start
+is equal to the distance from the meeting point to the
 cycle start.
 
-Therefore, moving both pointers one step at a time
-makes them meet exactly at the cycle's starting node.
+Therefore, moving both pointers one step at a time makes
+them meet exactly at the cycle's starting node.
 
----------------------------------------------------------
 Time Complexity:
 O(n)
 
-- First phase (cycle detection): O(n)
-- Second phase (finding cycle start): O(n)
-
-Overall: O(n)
-
----------------------------------------------------------
 Space Complexity:
 O(1)
 
-Only two pointers are used.
-
 ---------------------------------------------------------
-Python Solution
+Python Solution - Hash Set
 ---------------------------------------------------------
 """
 
@@ -125,8 +138,29 @@ from typing import Optional
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        visited = set()
+        curr = head
 
-        # Phase 1: Detect cycle
+        while curr:
+            if curr in visited:
+                return curr
+
+            visited.add(curr)
+            curr = curr.next
+
+        return None
+
+
+"""
+---------------------------------------------------------
+Python Solution - Floyd's Cycle Detection
+---------------------------------------------------------
+"""
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+
+        # Phase 1: Detect Cycle
         slow = head
         fast = head
 
@@ -139,7 +173,7 @@ class Solution:
         else:
             return None
 
-        # Phase 2: Find cycle start
+        # Phase 2: Find Start of Cycle
         slow = head
 
         while slow != fast:
@@ -147,3 +181,20 @@ class Solution:
             fast = fast.next
 
         return slow
+
+
+"""
+=========================================================
+Comparison
+=========================================================
+
+Hash Set:
+- Time Complexity: O(n)
+- Space Complexity: O(n)
+- Easy to understand and implement.
+
+Floyd's Cycle Detection:
+- Time Complexity: O(n)
+- Space Complexity: O(1)
+- Optimal solution and expected in interviews.
+"""
