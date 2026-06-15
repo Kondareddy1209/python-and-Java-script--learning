@@ -1,120 +1,77 @@
 """
-📌 Pivot Index (LeetCode 724) - GitHub Ready Notes
+LeetCode 724. Find Pivot Index
 
---------------------------------------------------
-🧠 Problem Statement:
-Given an integer array nums, return the pivot index.
+Problem:
+Given an array of integers nums, calculate the pivot index of this array.
 
-A pivot index is an index where:
-👉 Sum of all elements to the LEFT of the index
-    equals
-👉 Sum of all elements to the RIGHT of the index.
+The pivot index is the index where the sum of all the numbers strictly
+to the left of the index is equal to the sum of all the numbers strictly
+to the right of the index.
 
-If no such index exists, return -1.
+If the index is on the left edge of the array, then the left sum is 0.
+If the index is on the right edge of the array, then the right sum is 0.
 
---------------------------------------------------
-🚀 Approach: Prefix Sum / Running Sum
+Return the leftmost pivot index. If no such index exists, return -1.
 
-Instead of calculating left and right sums for every index
-(which would take O(n²) time), we use:
+Example 1:
+Input: nums = [1,7,3,6,5,6]
+Output: 3
 
-1. total_sum = sum(nums)
-2. left_sum = running sum of elements to the left
+Explanation:
+Pivot index = 3
+Left sum  = 1 + 7 + 3 = 11
+Right sum = 5 + 6 = 11
 
-At each index i:
+Example 2:
+Input: nums = [1,2,3]
+Output: -1
 
-    right_sum = total_sum - left_sum - nums[i]
+Example 3:
+Input: nums = [2,1,-1]
+Output: 0
 
-Why?
+Approach (Brute Force):
+For every index i:
+1. Calculate the sum of elements to its left.
+2. Calculate the sum of elements to its right.
+3. If both sums are equal, return i.
 
-    total_sum = left_sum + nums[i] + right_sum
+Time Complexity:
+- For each index, two sum() operations are performed.
+- Each sum() can take O(n) time.
+- Overall: O(n²)
 
-Rearranging:
-
-    right_sum = total_sum - left_sum - nums[i]
-
-If:
-
-    left_sum == right_sum
-
-then i is the pivot index.
-
---------------------------------------------------
-✅ Dry Run
-
-nums = [1, 7, 3, 6, 5, 6]
-
-total_sum = 28
-left_sum = 0
-
-i = 0
-left = 0
-right = 28 - 0 - 1 = 27 ❌
-
-i = 1
-left = 1
-right = 28 - 1 - 7 = 20 ❌
-
-i = 2
-left = 8
-right = 28 - 8 - 3 = 17 ❌
-
-i = 3
-left = 11
-right = 28 - 11 - 6 = 11 ✅
-
-🎯 Pivot Index = 3
-
---------------------------------------------------
-⏱️ Time Complexity:
-O(n)
-- Single traversal of the array
-
-🧠 Space Complexity:
-O(1)
-- Only a few variables are used
-
---------------------------------------------------
-⚠️ Common Mistakes:
-❌ Updating left_sum before checking the condition
-❌ Returning the pivot value instead of its index
-❌ Forgetting to subtract nums[i] when computing right_sum
-❌ Skipping the last index during iteration
-
---------------------------------------------------
-🔥 Key Takeaways:
-✔ Use total sum + running left sum
-✔ Compute right sum in O(1)
-✔ Check balance before updating left_sum
-✔ Optimal solution runs in O(n) time
-
---------------------------------------------------
-💻 Implementation
+Space Complexity:
+- Slicing creates temporary arrays.
+- Overall: O(n)
 """
 
 from typing import List
 
+
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
-        # Calculate total sum of the array
-        total_sum = sum(nums)
-
-        # Running sum of elements to the left of current index
-        left_sum = 0
-
-        # Traverse each index and compare left and right sums
         for i in range(len(nums)):
+            left = sum(nums[:i])
+            right = sum(nums[i + 1:])
 
-            # Right sum = total sum - left sum - current element
-            right_sum = total_sum - left_sum - nums[i]
-
-            # If left and right sums are equal,
-            # current index is the pivot index
-            if left_sum == right_sum:
+            if left == right:
                 return i
 
-            # Update left sum for the next iteration
-            left_sum += nums[i]
-
-        # No pivot index found
         return -1
+
+
+# -------------------------
+# Example Usage
+# -------------------------
+if __name__ == "__main__":
+    sol = Solution()
+
+    nums1 = [1, 7, 3, 6, 5, 6]
+    print(sol.pivotIndex(nums1))  # Output: 3
+
+    nums2 = [1, 2, 3]
+    print(sol.pivotIndex(nums2))  # Output: -1
+
+    nums3 = [2, 1, -1]
+    print(sol.pivotIndex(nums3))  # Output: 0
