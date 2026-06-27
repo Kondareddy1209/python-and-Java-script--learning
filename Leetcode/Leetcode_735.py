@@ -68,3 +68,4 @@ class Solution:
                 stack.append(asteroid)
 
         return stack
+        
